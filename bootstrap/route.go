@@ -1,14 +1,15 @@
-package route
+package bootstrap
 
 import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"strings"
-	"tm/routes"
+	"tianmiao-go/pkg/config"
+	"tianmiao-go/routes"
 )
 
-func Init() {
+func InitRoute() {
 	// gin 实例
 	router := gin.Default()
 
@@ -22,7 +23,7 @@ func Init() {
 	setup404Handler(router)
 
 	//运行
-	run(router)
+	runRouter(router)
 }
 
 // 全局中间件
@@ -53,9 +54,9 @@ func setup404Handler(router *gin.Engine) {
 	})
 }
 
-func run(router *gin.Engine) {
+func runRouter(router *gin.Engine) {
 	// 运行服务器
-	err := router.Run(":8080")
+	err := router.Run(":" + config.GetString("APP_PORT"))
 	if err != nil {
 		log.Fatal(err)
 	}
