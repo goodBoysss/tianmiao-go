@@ -3,7 +3,7 @@ package Redirect
 import (
 	"github.com/gin-gonic/gin"
 	"tianmiao-go/app/Logics"
-	"tianmiao-go/pkg/response"
+	"tianmiao-go/app/Response"
 )
 
 type RedirectCroller struct{}
@@ -15,20 +15,14 @@ func (r *RedirectCroller) RedirectUrl(c *gin.Context) {
 	//逻辑层
 	logic := new(Logics.RedirectLogic)
 	redirectInfo := logic.GetRedirectInfo(domain, shortKey)
+	if redirectInfo != nil {
+
+	}
 
 	//添加访问记录到redis缓存
 	visitRecord := map[string]string{
 		"app_id": "2",
 	}
-
-	//'app_id' => $redirectInfo['app_id'] ?? 0,
-	//	'domain' => $domain,
-	//	'short_key' => $shortKey,
-	//	'user_agent' => $userAgent,
-	//	'ip' => $ip,
-	//	'visit_time' => date("Y-m-d H:i:s"),
-
 	logic.AddRedirectVisitRecordToCache(visitRecord)
-
-	response.JSON(c, redirectInfo)
+	Response.SendData(c, redirectInfo, "")
 }
