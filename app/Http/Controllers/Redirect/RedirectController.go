@@ -31,7 +31,7 @@ func (r *RedirectCroller) RedirectUrl(c *gin.Context) {
 	redirectInfo := logic.GetRedirectInfo(domain, shortKey)
 	if redirectInfo["origin_url"] != nil {
 		//goroute 协程处理添加日志信息，由于http常驻进程，单次请求无需等待处理完成
-		go func() {
+		go func(redirectInfo map[string]interface{}, domain string, shortKey string, userAgent string, ip string) {
 			//添加访问记录到redis缓存
 			visitRecord := make(map[string]interface{})
 			visitRecord["app_id"] = redirectInfo["app_id"]
@@ -40,9 +40,9 @@ func (r *RedirectCroller) RedirectUrl(c *gin.Context) {
 			visitRecord["user_agent"] = userAgent
 			visitRecord["ip"] = ip
 			visitRecord["visit_time"] = helpers.DateTime("Y-m-d H:i:s", time.Now().Unix())
-			//将访问记录添加到redis缓存，等待堆积后一起处理
+			//将访问记录添加到redis缓存
 			logic.AddRedirectVisitRecordToCache(visitRecord)
-		}()
+		}(redirectInfo, domain, shortKey, userAgent, ip)
 
 		//获取浏览器类型：0-其他；1-微信应用内置；2-QQ应用内置
 		browserType := logic.GetBrowserType(userAgent)
