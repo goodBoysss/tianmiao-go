@@ -65,7 +65,7 @@ func loadTemplates(router *gin.Engine) {
 
 func runRouter(router *gin.Engine) {
 	// 运行服务器
-	err := router.Run(":" + config.GetString("APP_PORT"))
+	err := router.Run("0.0.0.0:" + config.GetString("APP_PORT", "80"))
 	if err != nil {
 		log.Fatal(err)
 	}
