@@ -20,7 +20,11 @@ func InitRoute() {
 	routes.RouteRegister(router)
 
 	// 配置 404 路由
+
 	setup404Handler(router)
+
+	//加载html模板
+	loadTemplates(router)
 
 	//运行
 	runRouter(router)
@@ -52,6 +56,11 @@ func setup404Handler(router *gin.Engine) {
 			})
 		}
 	})
+}
+
+// 加载html模板
+func loadTemplates(router *gin.Engine) {
+	router.LoadHTMLGlob("./app/Templates/Redirect/Cover.html")
 }
 
 func runRouter(router *gin.Engine) {
