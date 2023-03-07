@@ -23,15 +23,14 @@ func (l *RedirectLogic) GetRedirectInfo(domain string, shortKey string) map[stri
 	//md5加密
 	domainMd5 := helpers.Md5(domain)
 
-	//先从缓存获取
+	//优先从缓存获取
 	redisKey := fmt.Sprintf(Enums.REDIS_KEY_REDIRECT_URLS, domainMd5, shortKey)
 	redisValue := redis.Redis.Get(redisKey)
 
-	redirectInfo = helpers.JsonDecode(redisValue)
-	if len(redirectInfo) == 0 {
-		//重新赋值
-		redirectInfo = make(map[string]interface{})
-		//获取跳转信息
+	if redisValue != "" { //缓存中有值，直接返回缓存值
+		redirectInfo = helpers.JsonDecode(redisValue)
+	} else { //缓存中没有值，从数据库中获取
+		//初始化数据结构模型
 		redirectModel := Models.RedirectUrl{}
 		where := [][]string{
 			[]string{"domain_md5", "=", domainMd5},
@@ -39,7 +38,7 @@ func (l *RedirectLogic) GetRedirectInfo(domain string, shortKey string) map[stri
 		}
 		repo.GetOne(&redirectModel, where, []string{"app_id", "origin_url", "is_show_cover"}, nil)
 
-		if redirectModel.AppId > 0 {
+		if redirectModel.AppId > 0 { //数据库中不为空
 			//是否展示跳转封面
 			isShowCover := redirectModel.IsShowCover
 			//封面图片地址
