@@ -4,12 +4,18 @@ import (
 	"github.com/gin-gonic/gin"
 	btsConig "tianmiao-go/config"
 	"tianmiao-go/pkg/config"
+	"tianmiao-go/pkg/helpers"
 )
 
 func InitApp() {
 
 	// 配置初始化，依赖命令行 --env 参数
-	config.InitConfig("../../.env")
+	config.InitConfig(".env")
+	appEnv := config.GetString("APP_ENV")
+	if appEnv != "" && helpers.FileExists(".env."+appEnv) == true {
+		config.InitConfig(appEnv)
+	}
+
 	//触发加载 config 包的所有 init 函数
 	btsConig.Initialize()
 	// 设置 gin 的运行模式，支持 debug, release, test
