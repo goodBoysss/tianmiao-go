@@ -60,7 +60,7 @@ func setup404Handler(router *gin.Engine) {
 
 // 加载html模板
 func loadTemplates(router *gin.Engine) {
-	router.LoadHTMLGlob("./app/Templates/Redirect/Cover.html")
+	router.LoadHTMLGlob("./templates/redirect/cover.html")
 }
 
 func runRouter(router *gin.Engine) {

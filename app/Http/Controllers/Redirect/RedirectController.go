@@ -52,7 +52,7 @@ func (r *RedirectCroller) RedirectUrl(c *gin.Context) {
 			c.Redirect(http.StatusFound, fmt.Sprintf("%s", redirectInfo["origin_url"]))
 
 		} else { //特殊浏览器：例如1-微信应用内置；2-QQ应用内置，展示过度页面
-			c.HTML(http.StatusOK, "Cover.html", gin.H{
+			c.HTML(http.StatusOK, "cover.html", gin.H{
 				"info": redirectInfo,
 			})
 		}
