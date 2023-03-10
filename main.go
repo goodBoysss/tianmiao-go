@@ -15,5 +15,5 @@ func main() {
 	bootstrap.SetupRedis()
 
 	//路由初始化（监听端口）
-	bootstrap.InitRoute()
+	//bootstrap.InitRoute()
 }
