@@ -26,7 +26,7 @@ func InitRoute() {
 	loadTemplates(router)
 
 	//运行
-	runRouter(router)
+	RunRouter(router)
 }
 
 // 全局中间件
@@ -62,7 +62,7 @@ func loadTemplates(router *gin.Engine) {
 	router.LoadHTMLGlob("./templates/*")
 }
 
-func runRouter(router *gin.Engine) {
+func RunRouter(router *gin.Engine) {
 	// 运行服务器
 	err := router.Run("0.0.0.0:" + config.GetString("APP_PORT", "80"))
 	if err != nil {

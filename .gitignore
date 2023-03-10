@@ -1,5 +1,6 @@
 /vendor
 /.idea
+/.DS_Store
 /test
 .env*
 !.env.example

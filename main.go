@@ -13,6 +13,7 @@ func main() {
 	bootstrap.SetupDB()
 	// 初始化Redis
 	bootstrap.SetupRedis()
+
 	//路由初始化（监听端口）
 	bootstrap.InitRoute()
 }
